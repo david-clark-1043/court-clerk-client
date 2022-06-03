@@ -1,20 +1,28 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { useHistory } from "react-router-dom"
-import { Route } from "react-router-dom"
+import "./NavBar.css"
 
 export const NavBar = () => {
     const history = useHistory()
+    const filerId = localStorage.getItem("filerId")
+
     return (
         <ul className="navbar">
             <li className="navbar__item">
                 <Link to="/">Home</Link>
             </li>
             <li className="navbar__item">
-                <Link to="/dockets">Dockets</Link>
+                <Link to="/filings/new">Start A Filing</Link>
             </li>
             <li className="navbar__item">
-                Navigation link
+                <Link to={`/dockets/filers/${filerId}`}>Your Cases</Link>
+            </li>
+            <li className="navbar__item">
+                <Link to="/dockets">Search Cases</Link>
+            </li>
+            <li className="navbar__item">
+                <Link to={`/profiles/${filerId}`}>My Profile</Link>
             </li>
             {
                 (localStorage.getItem("courtz_token") !== null) ?
@@ -22,6 +30,7 @@ export const NavBar = () => {
                         <button className="nav-link fakeLink"
                             onClick={() => {
                                 localStorage.removeItem("courtz_token")
+                                localStorage.removeItem("filerId")
                                 history.push({ pathname: "/" })
                             }}
                         >Logout</button>

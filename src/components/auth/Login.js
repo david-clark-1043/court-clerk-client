@@ -27,7 +27,7 @@ export const Login = () => {
             .then(res => {
                 if ("valid" in res && res.valid && "token" in res) {
                     localStorage.setItem("courtz_token", res.token)
-                    localStorage.setItem("gamerId", res.gamerId)
+                    localStorage.setItem("filerId", res.filerId)
                     history.push("/")
                 }
                 else {
