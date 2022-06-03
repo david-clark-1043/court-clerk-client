@@ -1,0 +1,14 @@
+.profileInfo {
+    margin: 1em;
+}
+
+.profileInfo > div {
+    padding: 0 1em;
+}
+
+.addressBlock {
+    display: flex;
+}
+.addressContent {
+    margin-left: .5em;
+}

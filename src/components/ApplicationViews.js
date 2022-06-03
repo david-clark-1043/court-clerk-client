@@ -4,7 +4,7 @@ import { Docket } from "./dockets/Docket"
 import { DocketList } from "./dockets/DocketList"
 import { CreateFiling } from "./filings/CreateFiling"
 import { Home } from "./home/Home"
-import { Profile } from "./profiles/Profile"
+import { Profile } from "./filers/Profile"
 
 export const ApplicationViews = () => {
     return <>
