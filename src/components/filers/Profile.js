@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { getFiler } from "./FilerManager"
 import "./Profile.css"
@@ -37,6 +38,11 @@ export const Profile = () => {
                     <div className="email">Email: {filer.user.email}</div>
                     <div className="phone">Phone: {filer.phoneNum}</div>
                     <div className="filerType">Filer Type: {filer.filerType.filerType}</div>
+                    <div>
+                        <Link to={`/dockets/filers/${filer.id}`}>
+                            Cases
+                        </Link>
+                    </div>
                 </div>
                 SetFilerJSX(jsx)
             }

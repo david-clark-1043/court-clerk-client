@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
+import { getDockets } from "../dockets/DocketManager"
 import { createFiling, getFilingTypes } from "./FilingManager"
 
 export const CreateFiling = () => {
@@ -16,12 +17,16 @@ export const CreateFiling = () => {
     */
                                 
     const [filingTypes, SetFilingTypes] = useState([])
+    const [dockets, SetDockets] = useState([])
     const history = useHistory()
 
     useEffect(
         () => {
-            getFilingTypes()
-                .then(SetFilingTypes)
+            const typesAsync = getFilingTypes()
+                                .then(SetFilingTypes)
+            const docketsAsync = getDockets()
+                                    .then(SetDockets)
+            Promise.all([typesAsync, docketsAsync])
         }, []
     )
 
@@ -51,7 +56,11 @@ export const CreateFiling = () => {
                 value={filing.docketId}
                 >
                 <option value="0">Start New Case</option>
-                <option value="1">Case 1</option>
+                {
+                    dockets.map(docket => {
+                        return <option value={docket.id}>{docket.caseName} {docket.caseNum}</option>
+                    })
+                }
             </select>
         </div>
         <div>

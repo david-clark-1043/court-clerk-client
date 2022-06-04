@@ -8,3 +8,6 @@ export const getDocket = (id) => {
 export const getDockets = () => {
     return fetchIt(`${Settings.API}/dockets`)
 }
+export const getDocketsByFiler = (filerId) => {
+    return fetchIt(`${Settings.API}/dockets?filer=${filerId}`)
+}

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getDocket } from "./DocketManager"
+import { Link } from "react-router-dom"
+import "./Docket.css"
 
 export const Docket = () => {
     const [docket, SetDocket] = useState()
@@ -16,8 +18,8 @@ export const Docket = () => {
     )
 
     return <div>
-        <div>Case Title</div>
-        <div>{docket?.caseNum}</div>
+        <div>Case Name: {docket?.caseName}</div>
+        <div>Case Number: {docket?.caseNum}</div>
         <div>
             {
                 docket?.managers.map(manager => {
@@ -28,10 +30,15 @@ export const Docket = () => {
         <div>
             {
                 docket?.filings.map(filing => {
-                    return <div>
-                        {JSON.stringify(filing)}
+                    return <div key={`filing-${filing.id}`} className="singleFiling">
                         <div>Docket Number: {filing.docketIndex}</div>
-                        <div>Filer: {filing.filer.firstName} {filing.filer.lastName}</div>
+                        <div>Filing Type: {filing.filingType.filingType}</div>
+                        <div>
+                            <Link to={`/filings/${filing.id}`}>
+                                Title: {filing.title}
+                            </Link>
+                        </div>
+                        <div>Filer: {filing.filer.user.firstName} {filing.filer.user.lastName}</div>
                         </div>
                 })
             }

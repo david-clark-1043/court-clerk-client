@@ -5,6 +5,7 @@ import { DocketList } from "./dockets/DocketList"
 import { CreateFiling } from "./filings/CreateFiling"
 import { Home } from "./home/Home"
 import { Profile } from "./filers/Profile"
+import { Filing } from "./filings/Filings"
 
 export const ApplicationViews = () => {
     return <>
@@ -19,6 +20,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route exact path="/filings/new">
             <CreateFiling />
+        </Route>
+        <Route exact path="/filings/:filingId(\d+)">
+            <Filing />
         </Route>
         <Route exact path="/dockets/filers/:filerId(\d+)">
             <DocketList />
