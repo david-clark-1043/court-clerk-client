@@ -28,6 +28,8 @@ export const Login = () => {
                 if ("valid" in res && res.valid && "token" in res) {
                     localStorage.setItem("courtz_token", res.token)
                     localStorage.setItem("filerId", res.filerId)
+                    localStorage.setItem("admin", res.is_staff)
+
                     history.push("/")
                 }
                 else {

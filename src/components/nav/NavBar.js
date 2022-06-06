@@ -6,9 +6,13 @@ import "./NavBar.css"
 export const NavBar = () => {
     const history = useHistory()
     const filerId = localStorage.getItem("filerId")
+    const adminCheck = localStorage.getItem("admin") === "true"
 
     return (
         <ul className="navbar">
+            <li className="navbar__item">
+                CourtClark™
+            </li>
             <li className="navbar__item">
                 <Link to="/">Home</Link>
             </li>
@@ -21,6 +25,13 @@ export const NavBar = () => {
             <li className="navbar__item">
                 <Link to="/dockets">Search Cases</Link>
             </li>
+            {
+                adminCheck
+                ? <li className="navbar__item">
+                    <Link to="/filers">Filer Manager</Link>
+                </li>
+                : null
+            }
             <li className="navbar__item">
                 <Link to={`/profiles/${filerId}`}>My Profile</Link>
             </li>
@@ -31,6 +42,7 @@ export const NavBar = () => {
                             onClick={() => {
                                 localStorage.removeItem("courtz_token")
                                 localStorage.removeItem("filerId")
+                                localStorage.removeItem("admin")
                                 history.push({ pathname: "/" })
                             }}
                         >Logout</button>

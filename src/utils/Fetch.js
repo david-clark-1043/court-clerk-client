@@ -39,3 +39,7 @@ export const fetchIt = (url, method = "GET", body = null) => {
         return  humps.camelizeKeys(r)
     })
   }
+
+export const adminCheck = () => {
+  return localStorage.getItem("admin") === "true" ? true : false
+}

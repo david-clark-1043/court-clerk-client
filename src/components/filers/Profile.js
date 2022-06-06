@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { useParams } from "react-router-dom"
-import { getFiler } from "./FilerManager"
+import { deactivateFiler, getFiler } from "./FilerManager"
 import "./Profile.css"
 
 export const Profile = () => {
     const [filer, SetFiler] = useState()
     const [filerJSX, SetFilerJSX] = useState(<div>loading...</div>)
+    const adminCheck = localStorage.getItem("admin") === "true"
     const { filerId } = useParams()
+    const history = useHistory()
 
     useEffect(
         () => {
@@ -16,6 +19,16 @@ export const Profile = () => {
                 .then(SetFiler)
         }, []
     )
+
+    const closeAccount = () => {
+        deactivateFiler(filerId)
+            .then(() => {
+                localStorage.removeItem("courtz_token")
+                localStorage.removeItem("filerId")
+                localStorage.removeItem("admin")
+                history.push({ pathname: "/" })
+            })
+    }
 
     useEffect(
         () => {
@@ -41,6 +54,20 @@ export const Profile = () => {
                     <div>
                         <Link to={`/dockets/filers/${filer.id}`}>
                             Cases
+                        </Link>
+                    </div>
+                    <div>
+                        {
+                            adminCheck
+                                ? null
+                                : <button onClick={closeAccount}>
+                                    Close my account
+                                </button>
+                        }
+                    </div>
+                    <div>
+                        <Link to={`/filers/${filerId}/edit`}>
+                            Edit This Profile
                         </Link>
                     </div>
                 </div>

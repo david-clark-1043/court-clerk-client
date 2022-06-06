@@ -1,0 +1,40 @@
+.docketList {
+    margin: 1em;
+    padding: 1em;
+    border-radius: 1em;
+    background-color: rgba(0, 162, 255, 0.411);
+    width: 40%;
+}
+
+.home {
+    display: flex;
+}
+
+.homeButtonDiv {
+    margin: 1em;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.homeButtonDiv > button {
+    background-color: burlywood;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(49, 49, 49);
+    border-radius: 1em;
+    padding: .75em;
+    margin: .5em;
+    border: 0;
+    box-shadow: 2px 2px;
+}
+
+.homeButtonDiv > button:active {
+    background-color: rgb(201, 152, 87);
+    box-shadow: 0 0;
+    transform: translateX(2px) translateY(4px);
+}
+.homeButtonDiv > button:hover {
+    background-color: rgb(201, 152, 87);
+
+}

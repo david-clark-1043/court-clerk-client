@@ -2,19 +2,28 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { getFiler } from "../filers/FilerManager"
-import { getDockets, getDocketsByFiler } from "./DocketManager"
+import { getDockets, getDocketsByFiler, getOpenDocketsByFiler } from "./DocketManager"
 
-export const DocketList = () => {
+export const DocketList = ({ home }) => {
     const [dockets, SetDockets] = useState([])
     const [filer, SetFiler] = useState()
-    const { filerId } = useParams()
+    let { filerId } = useParams()
+
+    if(!filerId) {
+        filerId = localStorage.getItem("filerId")
+    }
 
     useEffect(
         () => {
             if(filerId) {
-                const docketAsync = getDocketsByFiler(filerId)
-                    .then(SetDockets)
-                const filerAsync = getFiler(filerId)
+                if(home) {
+                    getOpenDocketsByFiler(filerId)
+                        .then(SetDockets)
+                } else {
+                    getDocketsByFiler(filerId)
+                        .then(SetDockets)
+                }
+                getFiler(filerId)
                     .then(SetFiler)
             } else {
                 getDockets()
@@ -27,8 +36,22 @@ export const DocketList = () => {
     return <div>
         {
             filer
-                ? <div>Dockets for {filer.user.firstName} {filer.user.lastName}</div>
+                ? <h2>
+                    Dockets for {filer.user.firstName} {filer.user.lastName}
+                </h2>
                 : null
+        }
+        {
+            dockets?.length == 0
+            ? <div>
+                <div>No{home ? " open " : " "}cases</div>
+                {
+                    home
+                        ? <Link to={`/dockets/filers/${filerId}`}>See Closed Cases</Link>
+                        : null
+                }
+            </div>
+            : null
         }
         {
             dockets?.map(docket => {
@@ -39,6 +62,7 @@ export const DocketList = () => {
                         Title: {docket.caseName}
                         </Link>
                     </div>
+                    <div>Status: {docket.status.statusLabel}</div>
                 </div>
             })
         }
