@@ -1,9 +1,10 @@
 .navbar {
     display: flex;
-    flex-direction: horizontal;
+    flex-direction: row;
     justify-content: space-evenly;
     list-style-type: none;
     padding: 1em;
+    margin-top: 0;
     border: 1px blue dotted;
     background-color: rgb(56, 113, 247);
 }

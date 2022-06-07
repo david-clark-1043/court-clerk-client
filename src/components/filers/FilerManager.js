@@ -10,8 +10,14 @@ export const updateFiler = (id, filerObject) => {
     return fetchIt(`${Settings.API}/filers/${id}`, 'PUT', filerObject)
 }
 
-export const getFilers = (id) => {
+export const getFilers = () => {
     return fetchIt(`${Settings.API}/filers`)
+}
+export const getParties = () => {
+    return fetchIt(`${Settings.API}/filers?type=party`)
+}
+export const getPartyTypes = () => {
+    return fetchIt(`${Settings.API}/partyTypes`)
 }
 
 export const deactivateFiler = (id) => {

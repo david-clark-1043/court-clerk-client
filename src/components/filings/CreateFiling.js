@@ -46,7 +46,11 @@ export const CreateFiling = () => {
     const submitFiling = () => {
         createFiling(filing)
             .then(newFiling => {
-                history.push(`/dockets/${newFiling.docket.id}`)
+                if ("docket" in newFiling) {
+                    history.push(`/dockets/${newFiling.docket.id}`)
+                } else {
+                    window.alert("Only judges can file orders")
+                }
             })
     }
     return <div>

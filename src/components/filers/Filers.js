@@ -48,6 +48,9 @@ export const Filers = () => {
     }
 
     return <div>
+        <Link to="/filers/new">
+            Add a Filer
+        </Link>
         <table>
             <thead>
                 <tr>

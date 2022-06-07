@@ -24,7 +24,7 @@ export const AssignManagers = () => {
             })
     }
 
-    return <div>Assign managers page - docket {docketId} 
+    return <div>Assign managers for docket {docketId} 
         <div>
             <label htmlFor="managerId">Select Manager: </label>
             <select name="managerId"

@@ -61,6 +61,9 @@ export const Docket = () => {
             {
                 isManager
                 ? <div>
+                    <Link to={`/dockets/${docketId}/edit`}>
+                        Edit Case
+                    </Link>
                     <button
                         onClick={closeCase}
                         >

@@ -2,39 +2,55 @@ import React, { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Link, useHistory } from "react-router-dom"
 import { getFiler, updateFiler } from "./FilerManager"
+import humps from "humps";
+
 // import "./Auth.css"
 
-export const EditFiler = () => {
-    const [filer, SetFiler] = useState({})
+export const EditFiler = ({ newFiler }) => {
+    const [filer, SetFiler] = useState({
+        "username": "",
+        "firstName": "",
+        "lastName": "",
+        "email": "",
+        "addressLine1": "",
+        "addressLine2": "",
+        "addressCity": "",
+        "stateCode": "",
+        "zipCode": "",
+        "phoneNum": "",
+        "filerTypeId": 1
+    })
     const { filerId } = useParams()
     const history = useHistory()
 
     useEffect(
         () => {
-            getFiler(filerId)
-                .then((filer) => {
-                    const newUser = {
-                        "username": filer.user.username,
-                        "firstName": filer.user.firstName,
-                        "lastName": filer.user.lastName,
-                        "email": filer.user.email,
-                        "addressLine1": filer.addressLine1,
-                        "addressLine2": filer.addressLine2,
-                        "addressCity": filer.addressCity,
-                        "stateCode": filer.stateCode,
-                        "zipCode": filer.zipCode,
-                        "phoneNum": filer.phoneNum,
-                        "filerTypeId": filer.filerType.id
-                    }
-                    SetFiler(newUser)
-                })
+            if (!newFiler) {
+                getFiler(filerId)
+                    .then((filer) => {
+                        const newUser = {
+                            "username": filer.user.username,
+                            "firstName": filer.user.firstName,
+                            "lastName": filer.user.lastName,
+                            "email": filer.user.email,
+                            "addressLine1": filer.addressLine1,
+                            "addressLine2": filer.addressLine2,
+                            "addressCity": filer.addressCity,
+                            "stateCode": filer.stateCode,
+                            "zipCode": filer.zipCode,
+                            "phoneNum": filer.phoneNum,
+                            "filerTypeId": filer.filerType.id
+                        }
+                        SetFiler(newUser)
+                    })
+            }
         }, []
     )
 
     const handleChange = (event) => {
         event.preventDefault()
         const copy = JSON.parse(JSON.stringify(filer))
-        if(event.target.name === "filerTypeId"){
+        if (event.target.name === "filerTypeId") {
             copy[event.target.name] = parseInt(event.target.value)
         } else {
             copy[event.target.name] = event.target.value
@@ -44,17 +60,34 @@ export const EditFiler = () => {
 
     const editFiler = (e) => {
         e.preventDefault()
-        updateFiler(filerId, filer)
-            .then(() => {
-                history.push(`/profiles/${filerId}`)
+        if (!newFiler) {
+
+            updateFiler(filerId, filer)
+                .then(() => {
+                    history.push(`/profiles/${filerId}`)
+                })
+        } else {
+            fetch("http://127.0.0.1:8000/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(humps.decamelizeKeys(filer))
             })
+            .then(res => res.json())
+            .then((res) => {
+                debugger
+                history.push(`/profiles/${res.filer_id}`)
+            })
+        }
     }
 
     return (
         <main style={{ textAlign: "center" }}>
 
             <form className="form--login" onSubmit={editFiler}>
-                <h1 className="h3 mb-3 font-weight-normal">Update This Filer</h1>
+                <h1 className="h3 mb-3 font-weight-normal">{newFiler ? "Add a new" : "Update this"} Filer</h1>
                 <fieldset>
                     <label htmlFor="firstName"> First Name </label>
                     <input onChange={handleChange} value={filer.firstName} type="text" name="firstName" className="form-control" placeholder="First name" required autoFocus />
@@ -67,6 +100,20 @@ export const EditFiler = () => {
                     <label htmlFor="inputUsername">Username</label>
                     <input onChange={handleChange} value={filer.username} type="text" name="username" className="form-control" placeholder="Username" required />
                 </fieldset>
+                {
+                    newFiler
+                        ? <>
+                            <fieldset>
+                                <label htmlFor="inputPassword"> Password </label>
+                                <input onChange={handleChange} value={filer.password} type="password" name="password" className="form-control" placeholder="Password" required />
+                            </fieldset>
+                            <fieldset>
+                                <label htmlFor="verifyPassword"> Verify Password </label>
+                                <input  type="password" name="verifyPassword" className="form-control" placeholder="Verify password" required />
+                            </fieldset>
+                        </>
+                        : null
+                }
                 <fieldset>
                     <label htmlFor="email">Email</label>
                     <input onChange={handleChange} value={filer.email} type="text" name="email" className="form-control" placeholder="email" required />

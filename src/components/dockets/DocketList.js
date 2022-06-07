@@ -2,14 +2,17 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { getFiler } from "../filers/FilerManager"
-import { getDockets, getDocketsByFiler, getOpenDocketsByFiler } from "./DocketManager"
+import { getDockets, getDocketsByFiler, getDocketsBySearchAndFiler, getDocketsSearch, getOpenDocketsByFiler } from "./DocketManager"
+import "./Docket.css"
+
 
 export const DocketList = ({ home }) => {
     const [dockets, SetDockets] = useState([])
     const [filer, SetFiler] = useState()
+    const [searchTerm, SetSearchTerm] = useState("")
     let { filerId } = useParams()
 
-    if(!filerId) {
+    if(home) {
         filerId = localStorage.getItem("filerId")
     }
 
@@ -32,12 +35,31 @@ export const DocketList = ({ home }) => {
         }, []
     )
 
+    useEffect(
+        () => {
+            if(searchTerm.length > 0) {
+                if(filerId) {
+                    getDocketsBySearchAndFiler(filerId, searchTerm)
+                        .then(SetDockets)
+                } else {
+                    getDocketsSearch(searchTerm)
+                        .then(SetDockets)
+                }
+            }
+        }, [searchTerm]
+    )
+
+    const handleSearch = (event) => {
+        event.preventDefault()
+        SetSearchTerm(event.target.value)
+    }
+
 
     return <div>
         {
             filer
                 ? <h2>
-                    Dockets for {filer.user.firstName} {filer.user.lastName}
+                    {home ? "Open " : ""}Dockets for {filer.user.firstName} {filer.user.lastName}
                 </h2>
                 : null
         }
@@ -54,8 +76,16 @@ export const DocketList = ({ home }) => {
             : null
         }
         {
+            home
+                ? null
+                : <div>
+                <div>Search Cases By Case Number</div>
+                <input type="text" onChange={handleSearch} value={searchTerm} name="numberSearch" />
+            </div>
+        }
+        {
             dockets?.map(docket => {
-                return <div key={`docket-${docket.id}`}>
+                return <div key={`docket-${docket.id}`} className="docketCard">
                     <div>Case Number: {docket.caseNum}</div>
                     <div>
                         <Link to={`/dockets/${docket.id}`}>

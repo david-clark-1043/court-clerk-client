@@ -8,9 +8,16 @@ export const getDocket = (id) => {
 export const getDockets = () => {
     return fetchIt(`${Settings.API}/dockets`)
 }
+export const getDocketsSearch = (searchTerm) => {
+    return fetchIt(`${Settings.API}/dockets?num=${searchTerm}`)
+}
 
 export const getDocketsByFiler = (filerId) => {
     return fetchIt(`${Settings.API}/dockets?filer=${filerId}`)
+}
+
+export const getDocketsBySearchAndFiler = (filerId, searchTerm) => {
+    return fetchIt(`${Settings.API}/dockets?filer=${filerId}&num=${searchTerm}`)
 }
 
 export const getOpenDocketsByFiler = (filerId) => {

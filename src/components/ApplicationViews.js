@@ -9,9 +9,11 @@ import { Filing } from "./filings/Filings"
 import { AssignManagers } from "./adminTools/AssignManagers"
 import { Filers } from "./filers/Filers"
 import { EditFiler } from "./filers/EditFiler"
+import { EditDocket } from "./dockets/EditDocket"
 
 export const ApplicationViews = () => {
     return <>
+    <main style={{ margin: "1em" }}>
         <Route exact path="/">
             <Home />
         </Route>
@@ -20,6 +22,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route exact path="/dockets/:docketId(\d+)">
             <Docket />
+        </Route>
+        <Route exact path="/dockets/:docketId(\d+)/edit">
+            <EditDocket />
         </Route>
         <Route exact path="/filings/new">
             <CreateFiling />
@@ -37,10 +42,14 @@ export const ApplicationViews = () => {
             <Filers />
         </Route>
         <Route exact path="/filers/:filerId(\d+)/edit">
-            <EditFiler />
+            <EditFiler newFiler={false} />
+        </Route>
+        <Route exact path="/filers/new">
+            <EditFiler newFiler={true} />
         </Route>
         <Route exact path="/dockets/:docketId(\d+)/assignManagers">
             <AssignManagers />
         </Route>
+        </main>
     </>
 }
