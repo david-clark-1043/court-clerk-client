@@ -8,7 +8,8 @@ export const CreateFiling = () => {
         docketId: 0,
         title: "",
         fileUrl: "",
-        filingTypeId: 0
+        filingTypeId: 0,
+        filePdf: "",
     })
     const [newCase, SetNewCase] = useState(true)
     /* 
@@ -33,6 +34,8 @@ export const CreateFiling = () => {
     )
 
 
+
+
     const handleForm = (event) => {
         const copy = JSON.parse(JSON.stringify(filing))
         if (event.target.name !== "fileUrl" && event.target.name !== "title") {
@@ -53,6 +56,24 @@ export const CreateFiling = () => {
                 }
             })
     }
+
+    const getBase64 = (file, callback) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(file);
+    }
+    
+    const createPdfFileString = (event) => {
+        getBase64(event.target.files[0], (base64PdfString) => {
+            console.log("Base64 of file is", base64PdfString);
+    
+            // Update a component state variable to the value of base64ImageString
+            const copy = JSON.parse(JSON.stringify(filing))
+            copy[event.target.name] = base64PdfString
+            SetFiling(copy)
+        });
+    }
+
     return <div>
         <h1>Submit New Filing</h1>
         <div>
@@ -61,12 +82,12 @@ export const CreateFiling = () => {
                 let copy = JSON.parse(JSON.stringify(filing))
                 copy.docketId = 0
                 SetFiling(copy)
-                if(e.target.checked) {
+                if (e.target.checked) {
                     SetNewCase(true)
                 } else {
                     SetNewCase(false)
                 }
-            }} checked={newCase}/>
+            }} checked={newCase} />
             {
                 newCase
                     ? null
@@ -107,6 +128,11 @@ export const CreateFiling = () => {
                 }
             </select>
         </div>
+        <input type="file" name="filePdf" id="filePdf" onChange={createPdfFileString} />
+        {/* <input type="hidden" name="filePdf" value={game.id} /> */}
+        {/* <button onClick={() => {
+            // Upload the stringified image that is stored in state
+        }}>Upload</button> */}
         <button onClick={submitFiling}>
             Submit Filing
         </button>

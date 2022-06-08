@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { getFiling } from "./FilingManager"
+import { Settings } from "../../utils/Settings"
 
 export const Filing = () => {
     const [filing, SetFiling] = useState()
@@ -48,10 +49,11 @@ export const Filing = () => {
                         </div>
                     </div>
                     <div>
-                        <a href={filing.fileUrl}>
-                            Link to File
+                        <a href={`${Settings.API}${filing.filePdf}`} download>
+                            Download File
                         </a>
                     </div>
+
                 </div>
                 SetFilingJSX(jsx)
             }
