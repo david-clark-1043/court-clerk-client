@@ -10,6 +10,7 @@ import { AssignManagers } from "./adminTools/AssignManagers"
 import { Filers } from "./filers/Filers"
 import { EditFiler } from "./filers/EditFiler"
 import { EditDocket } from "./dockets/EditDocket"
+import { AddFirmRelation } from "./firms/AddFirmRelation"
 
 export const ApplicationViews = () => {
     return <>
@@ -37,6 +38,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route exact path="/profiles/:filerId(\d+)">
             <Profile />
+        </Route>
+        <Route exact path="/profiles/:filerId(\d+)/addFirm">
+            <AddFirmRelation />
         </Route>
         <Route exact path="/filers">
             <Filers />

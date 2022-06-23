@@ -43,8 +43,8 @@ export const Filing = () => {
                     <div>
                         <div>
                             Filer:{" "}
-                            <Link to={`/profiles/${filing.filer.id}`}>
-                                {filing.filer.user.firstName} {filing.filer.user.lastName}
+                            <Link to={`/profiles/${filing.docketParty.repFirmParty.repFirm.representative.user.id}`}>
+                                {filing.docketParty.repFirmParty.repFirm.representative.user.firstName} {filing.docketParty.repFirmParty.repFirm.representative.user.lastName}
                             </Link>
                         </div>
                     </div>

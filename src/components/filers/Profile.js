@@ -58,7 +58,7 @@ export const Profile = () => {
                     </div>
                     <div>
                         {
-                            adminCheck
+                            adminCheck || parseInt(filerId) !== filer.id
                                 ? null
                                 : <button onClick={closeAccount}>
                                     Close my account
@@ -66,8 +66,17 @@ export const Profile = () => {
                         }
                     </div>
                     <div>
-                        <Link to={`/filers/${filerId}/edit`}>
-                            Edit This Profile
+                        {
+                            adminCheck || parseInt(filerId) === filer.id
+                                ? <Link to={`/filers/${filerId}/edit`}>
+                                    Edit This Profile
+                                </Link>
+                                : null
+                        }
+                    </div>
+                    <div>
+                        <Link to={`/profiles/${filerId}/addFirm`}>
+                            Add a Law Firm Relationship
                         </Link>
                     </div>
                 </div>

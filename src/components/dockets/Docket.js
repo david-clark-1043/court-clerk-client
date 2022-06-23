@@ -26,7 +26,7 @@ export const Docket = () => {
 
     useEffect(
         () => {
-            if(docket?.managers.length > 0) {
+            if(docket?.managers?.length > 0) {
                 let managerCheck = false
                 const filerId = parseInt(localStorage.getItem("filerId"))
                 for(const manager of docket.managers){
@@ -50,7 +50,7 @@ export const Docket = () => {
         <div>
             <div>manager list</div>
             {
-                docket?.managers.map(manager => {
+                docket?.managers?.map(manager => {
                     return <div key={`manager-${manager.id}`}>
                         {manager.user.firstName} {manager.user.lastName} - {manager.filerType.filerType}
                     </div>
@@ -59,7 +59,7 @@ export const Docket = () => {
         </div>
         <div>
             {
-                isManager
+                adminCheck()
                 ? <div>
                     <Link to={`/dockets/${docketId}/edit`}>
                         Edit Case
@@ -70,21 +70,23 @@ export const Docket = () => {
                         Close Case
                     </button>
                 </div>
-                : "false"
-            }
-        </div>
-        <div>
-            {
-                adminCheck()
-                ? <Link to={`/dockets/${docket?.id}/assignManagers`}>
-                    Assign Managers
-                </Link>
                 : null
             }
         </div>
         <div>
+            {/* {
+                
+                ? <Link to={`/dockets/${docket?.id}/assignManagers`}>
+                    Assign Managers
+                </Link>
+                : null
+            } */}
+        </div>
+        <div>
             {
                 docket?.filings.map(filing => {
+                    const user = filing.docketParty.repFirmParty.repFirm.representative.user
+                    const party = filing.docketParty.repFirmParty.party.user
                     return <div key={`filing-${filing.id}`} className="singleFiling">
                         <div>Docket Number: {filing.docketIndex}</div>
                         <div>Filing Type: {filing.filingType.filingType}</div>
@@ -93,7 +95,12 @@ export const Docket = () => {
                                 Title: {filing.title}
                             </Link>
                         </div>
-                        <div>Filer: {filing.filer.user.firstName} {filing.filer.user.lastName}</div>
+                        <div>Filer: {user.firstName} {user.lastName}</div>
+                        {
+                            party.id === user.id
+                            ? <div>Filed pro se</div>
+                            : <div>Party: {party.firstName} {party.lastName}</div>
+                        }
                         </div>
                 })
             }

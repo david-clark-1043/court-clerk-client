@@ -39,9 +39,9 @@ export const EditDocket = () => {
     const removeManager = (event) => {
         event.preventDefault()
         const managerObject = {
-            managerId: parseInt(event.target.id.split("-")[1])
+            repFirmPartyId: parseInt(event.target.id.split("-")[1])
         }
-        unassignManager(docketId, managerObject)
+        unassignParty(docketId, managerObject)
             .then(() => {
                 setUpDocket(docketId)
             })
@@ -53,13 +53,19 @@ export const EditDocket = () => {
         <div className="managers">
             <div> Managers </div>
             {
-                docket?.managers.map(manager => {
-                    return <div className="managerCard">
-                        <div>{manager.user.firstName} {manager.user.lastName}</div>
-                        <button onClick={removeManager} id={`docketManager-${manager.user.id}`}>
+                docket?.docketParties?.map(docketParty => {
+                    const filerType = docketParty.repFirmParty.party.filerType.filerType
+                    const partyType = docketParty.partyType.partyType
+                    const judgeOrClerk = partyType == "judge" || partyType == "clerk"
+                    if(judgeOrClerk) {
+
+                        return <div className="docketPartyCard" key={`docketManager-${docketParty.repFirmParty.id}`}>
+                        <div>{docketParty.repFirmParty.party.user.firstName} {docketParty.repFirmParty.party.user.lastName}</div>
+                        <button onClick={removeManager} id={`docketManager-${docketParty.repFirmParty.id}`}>
                             Remove Manager
                         </button>
                     </div>
+                    }
                 })
             }
         </div>
@@ -67,16 +73,21 @@ export const EditDocket = () => {
         <div>
             Parties
             {
-                docket?.parties.map(party => {
-                    return <div className="partyCard">
-                        {/* {JSON.stringify(party.party)} */}
-                        <div>Party: <Link to={`/profiles/${party.party.user.id}`}>
-                            {party.party.user.firstName} {party.party.user.lastName}
-                            </Link>
+                docket?.docketParties?.map(docketParty => {
+                    const filerType = docketParty.repFirmParty.party.filerType.filerType
+                    const partyType = docketParty.partyType.partyType
+                    const judgeOrClerk = partyType != "judge" && partyType != "clerk"
+                    if(judgeOrClerk) {
+                        return <div className="docketPartyCard" key={`docketManager-${docketParty.repFirmParty.id}`}>
+                            {/* {JSON.stringify(docketParty.docketParty)} */}
+                            <div>Party: <Link to={`/profiles/${docketParty.repFirmParty.party.id}`}>
+                                {docketParty.repFirmParty.party.user.firstName} {docketParty.repFirmParty.party.user.lastName}
+                                </Link>
+                            </div>
+                            <div>Party Type: {partyType}</div>
+                            <button onClick={removeManager} id={`buttonDocketParty-${docketParty.repFirmParty.id}`}>Remove party</button>
                         </div>
-                        <div>Party Type: {party.partyType.partyType}</div>
-                        <button onClick={removeParty} id={`buttonParty-${party.party.user.id}`}>Remove Party</button>
-                    </div>
+                    }
                 })
             }
         </div>
